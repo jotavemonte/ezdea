@@ -298,7 +298,7 @@ class DEA:
         return solucao
 
     @staticmethod
-    def soma_produto(linha_a, linha_b):
+    def _soma_produto(linha_a, linha_b):
         valor_total = 0
         for x, y in zip(linha_a, linha_b):
             valor_total += x*y
@@ -311,7 +311,7 @@ class DEA:
         for linha_matriz in matriz_transposta:
             linha_metas = []
             for linha_dual in dual_formatada:
-                soma_produto = self.soma_produto(linha_matriz, linha_dual)
+                soma_produto = self._soma_produto(linha_matriz, linha_dual)
                 linha_metas.append(soma_produto)
             metas.append(linha_metas)
         return metas
