@@ -304,7 +304,7 @@ class DEA:
             valor_total += x*y
         return valor_total
 
-    def get_metas(self, dual_output):
+    def calcular_metas(self, dual_output):
         dual_formatada = [x[2:] for x in dual_output]
         matriz_transposta = numpy.array(self.matriz).transpose()
         metas = []
@@ -336,6 +336,6 @@ if __name__ == '__main__':
                             number_of_inputs,
                             number_of_outputs)
     bcc_result = my_first_scenario.ccr_dual_input(matrix=True)
-    metas = my_first_scenario.get_metas(bcc_result)
+    metas = my_first_scenario.calcular_metas(bcc_result)
     df = pd.DataFrame(metas)
     print(df)
