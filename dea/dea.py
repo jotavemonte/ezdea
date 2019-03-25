@@ -1,6 +1,5 @@
 from scipy.optimize import linprog
 import numpy
-import pandas as pd
 
 
 class DEA:
