@@ -1,3 +1,3 @@
-from dea import DEA
+from .dea import DEA
 
 DEA
