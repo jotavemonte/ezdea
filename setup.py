@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ezydea",
+    name="ezdea",
     version="0.0.1",
     author="João Victor Monte R Tavares",
     author_email="jotavmeonte@gmail.com",
