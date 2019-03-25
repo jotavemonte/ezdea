@@ -208,7 +208,7 @@ class DEA:
         bcc_aub = [(x + [-1, 1]) for x in bcc_aub]
         solucao = []
         for linha in self.matriz:
-            min_ = linha[0:self.n_inputs] 
+            min_ = linha[0:self.n_inputs]
             min_ += [0 for x in linha[self.n_inputs:]] + [1, -1]
             linear = [0 for x in linha[0:self.n_inputs]]
             linear += linha[self.n_inputs:] + [0, 0]
@@ -305,13 +305,14 @@ class DEA:
         return valor_total
 
     def get_metas(self, dual_output):
-        # self._valida_mtx(dual_output)
+        dual_formatada = [x[2:] for x in dual_output]
         matriz_transposta = numpy.array(self.matriz).transpose()
         metas = []
-        linha_metas = []
-        for linha_matiz in matriz_transposta:
-            for linha_dual in dual_output:
-                linha_metas.append(self.soma_produto(linha_matiz, linha_dual))
+        for linha_matriz in matriz_transposta:
+            linha_metas = []
+            for linha_dual in dual_formatada:
+                soma_produto = self.soma_produto(linha_matriz, linha_dual)
+                linha_metas.append(soma_produto)
             metas.append(linha_metas)
         return metas
 
