@@ -316,26 +316,3 @@ class DEA:
             metas.append(linha_metas)
         return metas
 
-
-if __name__ == '__main__':
-    matrix = [[20, 151, 100, 90],
-              [19, 131, 150, 50],
-              [25, 160, 160, 55],
-              [27, 168, 180, 72],
-              [22, 158, 94, 66],
-              [55, 255, 230, 90],
-              [33, 235, 220, 88],
-              [31, 206, 152, 80],
-              [30, 244, 290, 100],
-              [50, 268, 250, 100],
-              [53, 306, 262, 147],
-              [38, 284, 250, 120]]
-    number_of_inputs = 2
-    number_of_outputs = 2
-    my_first_scenario = DEA(matrix,
-                            number_of_inputs,
-                            number_of_outputs)
-    bcc_result = my_first_scenario.ccr_dual_input(matrix=True)
-    metas = my_first_scenario.calcular_metas(bcc_result)
-    df = pd.DataFrame(metas)
-    print(df)
