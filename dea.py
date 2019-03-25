@@ -1,7 +1,7 @@
 from scipy.optimize import linprog
 import numpy
 import pandas as pd
-from pdb import set_trace
+
 
 class DEA:
     def __init__(self, matriz, n_inputs, n_outputs):
@@ -57,9 +57,8 @@ class DEA:
 
     @staticmethod
     def _valida_mtx(entrada):
-        if not type(entrada[0]) == type(list()):
+        if not isinstance(entrada[0], type(list())):
             raise TypeError('Matrix Expected')
-
 
     def ccr_primal_input(self, matrix=False):
         ccr_aub = self._tornar_inputs_negativos()
@@ -203,16 +202,16 @@ class DEA:
             else:
                 solucao.append(self._resposta_limpa_primal(res_dea))
         return solucao
-    
+
     def bcc_primal_output(self, matrix=False):
         bcc_aub = self._tornar_inputs_negativos()
         bcc_aub = [(x + [-1, 1]) for x in bcc_aub]
         solucao = []
         for linha in self.matriz:
             min_ = linha[0:self.n_inputs] 
-            min_ += [0 for x in linha[self.n_inputs:]] + [1,-1]
+            min_ += [0 for x in linha[self.n_inputs:]] + [1, -1]
             linear = [0 for x in linha[0:self.n_inputs]]
-            linear += linha[self.n_inputs:] + [0,0]
+            linear += linha[self.n_inputs:] + [0, 0]
             res_dea = linprog(
                 min_,
                 bcc_aub,
@@ -232,7 +231,7 @@ class DEA:
         return solucao
 
     def bcc_dual_input(self, matrix=False):
-        func_matriz = [(x + [1,-1]) for x in self.matriz]
+        func_matriz = [(x + [1, -1]) for x in self.matriz]
         matriz_aub_t = numpy.transpose(func_matriz)
         rest_y = []
         for index in range(self.n_inputs,
@@ -248,7 +247,9 @@ class DEA:
                 rest_x.append(aux)
             rest = rest_x + rest_y
             vet_ineq = [0 for x in range(self.n_inputs)]
-            vet_ineq += [-x for x in linha[self.n_inputs:self.n_inputs+self.n_outputs]]
+            vet_ineq += [-x for x in linha[
+                self.n_inputs:self.n_inputs + self.n_outputs
+            ]]
             linear = [0] + [1 for x in matriz_aub_t[0]]
             res_dea = linprog(min_, rest, vet_ineq, [linear], [1])
             if res_dea['success'] is False:
@@ -262,7 +263,7 @@ class DEA:
         return solucao
 
     def bcc_dual_output(self, matrix=False):
-        func_matriz = [(x + [1,-1]) for x in self.matriz]
+        func_matriz = [(x + [1, -1]) for x in self.matriz]
         matriz_aub_t = numpy.transpose(func_matriz)
         solucao = []
         rest_x = []
@@ -295,7 +296,7 @@ class DEA:
             else:
                 solucao.append(self._resposta_limpa_dual(res_dea))
         return solucao
-    
+
     @staticmethod
     def soma_produto(linha_a, linha_b):
         valor_total = 0
@@ -304,29 +305,30 @@ class DEA:
         return valor_total
 
     def get_metas(self, dual_output):
-        #self._valida_mtx(dual_output)
+        # self._valida_mtx(dual_output)
         matriz_transposta = numpy.array(self.matriz).transpose()
         metas = []
         linha_metas = []
         for linha_matiz in matriz_transposta:
             for linha_dual in dual_output:
-                linha_metas.append(self.soma_produto(linha_matiz,linha_dual))
+                linha_metas.append(self.soma_produto(linha_matiz, linha_dual))
             metas.append(linha_metas)
         return metas
 
+
 if __name__ == '__main__':
     matrix = [[20, 151, 100, 90],
-            [19, 131, 150, 50],
-            [25, 160, 160, 55],
-            [27, 168, 180, 72],
-            [22, 158, 94, 66],
-            [55, 255, 230, 90],
-            [33, 235, 220, 88],
-            [31, 206, 152, 80],
-            [30, 244, 290, 100],
-            [50, 268, 250, 100],
-            [53, 306, 262, 147],
-            [38, 284, 250, 120]]
+              [19, 131, 150, 50],
+              [25, 160, 160, 55],
+              [27, 168, 180, 72],
+              [22, 158, 94, 66],
+              [55, 255, 230, 90],
+              [33, 235, 220, 88],
+              [31, 206, 152, 80],
+              [30, 244, 290, 100],
+              [50, 268, 250, 100],
+              [53, 306, 262, 147],
+              [38, 284, 250, 120]]
     number_of_inputs = 2
     number_of_outputs = 2
     my_first_scenario = DEA(matrix,
@@ -334,4 +336,5 @@ if __name__ == '__main__':
                             number_of_outputs)
     bcc_result = my_first_scenario.ccr_dual_input(matrix=True)
     metas = my_first_scenario.get_metas(bcc_result)
-    print(metas)
+    df = pd.DataFrame(metas)
+    print(df)
