@@ -52,3 +52,5 @@ print(df_metas)
 * DEA.bcc_dual_output(matrix=False)
 
 * DEA.calcular_metas(matriz_dual)
+
+# próximo passo: subir para o PyPi
