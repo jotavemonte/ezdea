@@ -2,6 +2,12 @@ from scipy.optimize import linprog
 import numpy
 
 
+METAS_ERROR_STRING = '''
+Expected Matrix as input. Got dict instead.
+try calling dual method with matrix=True
+'''
+
+
 class DEA:
     def __init__(self, matriz, n_inputs, n_outputs):
         self.matriz = matriz
@@ -35,7 +41,6 @@ class DEA:
 
     def _resposta_limpa_dual(self, res_dea):
         resp_dic = {}
-        resp_dic['.func_obj'] = res_dea['fun']
         for i in range(len(res_dea['x'])):
             if i == 0:
                 resp_str = 'θ'
@@ -304,6 +309,8 @@ class DEA:
         return valor_total
 
     def calcular_metas(self, dual_output):
+        if type(dual_output[0]) == type(dict()):
+            raise TypeError(METAS_ERROR_STRING)
         dual_formatada = [x[2:] for x in dual_output]
         matriz_transposta = numpy.array(self.matriz).transpose()
         metas = []
