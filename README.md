@@ -4,6 +4,8 @@
 
 ```python
 # crie a situação a ser analisada. No nosso caso será a seguinte matriz:
+from ezdea import DEA
+import pandas as pd
 
 matriz = [[20, 151, 100, 90],
           [19, 131, 150, 50],
